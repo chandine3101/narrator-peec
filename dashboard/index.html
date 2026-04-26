@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Narrator · Peec AI</title>
+  <link rel="stylesheet" href="styles.css?v=8" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-topbar">
+        <div class="brand-tag">
+          <span class="dot"></span>
+          <span>Peec AI · Narrator</span>
+        </div>
+        <div class="hero-actions">
+          <a href="report.html" class="report-link" target="_blank" rel="noopener" aria-label="View weekly report">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+            <span>Weekly report</span>
+          </a>
+          <button id="downloadPdf" class="pdf-btn" type="button" aria-label="Download PDF">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>Download PDF</span>
+          </button>
+        </div>
+      </div>
+      <h1 class="hero-question">Are you the recommendation, or the <span class="brand-name">alternative</span>?</h1>
+      <p class="subtitle">Narrator is built on the Peec MCP. It reads the sentences behind Peec's chat data and classifies how <span id="brandName">HP</span> is positioned in each AI response: the primary pick, an alternative, or a peer in the list.</p>
+
+      <div class="hero-stat">
+        <div class="hero-stat-number"><span id="altIndexPct">…</span>%</div>
+        <div class="hero-stat-label">
+          <span class="hero-stat-title" id="altIndexLabel">…</span>
+          <div class="hero-stat-confidence">
+            <span class="conf-tag" id="altIndexConf">directional</span>
+            <span class="conf-note" id="altIndexSample">…</span>
+          </div>
+          <span class="hero-stat-sub" id="altIndexSub"></span>
+        </div>
+      </div>
+
+      <div class="meta-row">
+        <div class="meta-pill"><span class="meta-label">Project</span><span id="metaBrand">…</span></div>
+        <div class="meta-pill"><span class="meta-label">Window</span><span id="metaWindow">…</span></div>
+        <div class="meta-pill"><span class="meta-label">Chats mentioning HP</span><span id="metaChats">…</span></div>
+        <div class="meta-pill"><span class="meta-label">AI engines</span><span id="metaAis">…</span></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- EVIDENCE -->
+    <section class="panel">
+      <div class="panel-header">
+        <h2>Evidence: the actual sentences</h2>
+        <span class="panel-sub">Pulled from Peec chats this week via the MCP. Each quote is classified by reading the surrounding phrasing.</span>
+      </div>
+      <div id="evidence" class="evidence"></div>
+    </section>
+
+    <!-- PER-AI POSITIONING -->
+    <section class="panel">
+      <div class="panel-header">
+        <h2>Per-AI positioning</h2>
+        <span class="panel-sub">Peec's per-model visibility, sentiment, and position, paired with the one narrative signal for each engine.</span>
+      </div>
+      <div id="perAi" class="model-grid"></div>
+    </section>
+
+    <!-- AI x TOPIC MATRIX (money shot) -->
+    <section class="panel">
+      <div class="panel-header">
+        <h2>HP visibility by AI × topic</h2>
+        <span class="panel-sub">Cross-tabbing Peec's model and topic dimensions into a single view. The monitor gap pops out immediately.</span>
+      </div>
+      <div id="matrix" class="matrix"></div>
+    </section>
+
+    <!-- CATEGORY OWNERSHIP -->
+    <section class="panel">
+      <div class="panel-header">
+        <h2>Category ownership: HP vs Dell</h2>
+        <span class="panel-sub">HP vs Dell visibility per topic, sourced from Peec's brand report.</span>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="categoryChart"></canvas>
+      </div>
+      <div id="categoryList" class="category-list"></div>
+    </section>
+
+    <!-- CITATION FOOTPRINT (sitemap) -->
+    <section class="panel sitemap-panel">
+      <div class="panel-header">
+        <h2>Citation footprint on <span id="sitemapDomain">hp.com</span></h2>
+        <span class="panel-sub">Pages on your own domain that AI engines actually cite. Each cluster is a section, each dot is a page, dot size scales with citation count.</span>
+      </div>
+      <div class="sitemap-wrap">
+        <aside class="sitemap-aside">
+          <div class="sitemap-stat">
+            <div class="sitemap-stat-num" id="footprintPages">-</div>
+            <div class="sitemap-stat-label">pages cited</div>
+          </div>
+          <div class="sitemap-stat">
+            <div class="sitemap-stat-num" id="footprintCitations">-</div>
+            <div class="sitemap-stat-label">total citations</div>
+          </div>
+          <div class="sitemap-legend" id="sitemapLegend"></div>
+          <div class="sitemap-insights" id="sitemapInsights"></div>
+        </aside>
+        <div class="sitemap-canvas">
+          <div class="sitemap-controls">
+            <button id="smZoomIn" type="button" aria-label="Zoom in">+</button>
+            <button id="smZoomOut" type="button" aria-label="Zoom out">-</button>
+            <button id="smReset" type="button" aria-label="Reset view">⤢</button>
+          </div>
+          <svg id="sitemapSvg" class="sitemap-svg" aria-label="Citation footprint graph"></svg>
+          <div class="sitemap-hint">Scroll to zoom · drag to pan · click a dot for full page details</div>
+          <div id="sitemapTooltip" class="sitemap-tooltip" hidden></div>
+        </div>
+      </div>
+      <aside id="sitemapDetail" class="sitemap-detail" hidden>
+        <button class="sitemap-detail-close" id="smDetailClose" type="button" aria-label="Close">×</button>
+        <div class="sm-detail-main">
+          <div class="sm-detail-head">
+            <div class="sm-detail-eyebrow"><span class="sm-detail-group" id="smdGroup"></span></div>
+            <h3 class="sm-detail-title" id="smdTitle"></h3>
+            <a class="sm-detail-url" id="smdUrl" target="_blank" rel="noopener"></a>
+            <div class="sm-detail-status" id="smdStatus"></div>
+          </div>
+          <div class="sm-detail-stats">
+            <div class="sm-detail-stat"><span class="sm-detail-num" id="smdCitations"></span><span class="sm-detail-lbl">citations</span></div>
+            <div class="sm-detail-stat"><span class="sm-detail-num" id="smdRetrievals"></span><span class="sm-detail-lbl">retrievals</span></div>
+            <div class="sm-detail-stat"><span class="sm-detail-num" id="smdRate"></span><span class="sm-detail-lbl">citation rate</span></div>
+          </div>
+          <div class="sm-detail-rows">
+            <div class="sm-detail-row"><span class="sm-detail-key">Page format</span><span id="smdType" class="sm-detail-val"></span></div>
+            <div class="sm-detail-row"><span class="sm-detail-key">URL path</span><span id="smdPath" class="sm-detail-val sm-detail-mono"></span></div>
+            <div class="sm-detail-alongside" id="smdAlongsideWrap" hidden>
+              <span class="sm-detail-key">Mentioned alongside</span>
+              <div id="smdAlongside" class="sm-detail-chips"></div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- DEEP CRAWL INSIGHTS -->
+    <section class="panel deepcrawl-panel">
+      <div class="panel-header">
+        <h2 id="dcTitle">Deep crawl insights</h2>
+        <span class="panel-sub" id="dcSubtitle"></span>
+      </div>
+      <div class="dc-headline">
+        <div class="dc-stat dc-stat-primary">
+          <div class="dc-stat-num" id="dcIndexed">-</div>
+          <div class="dc-stat-lbl">indexed in AI</div>
+        </div>
+        <div class="dc-stat">
+          <div class="dc-stat-num" id="dcRetrieved">-</div>
+          <div class="dc-stat-lbl">retrieved but not cited</div>
+        </div>
+        <div class="dc-stat">
+          <div class="dc-stat-num" id="dcRate">-</div>
+          <div class="dc-stat-lbl">indexing rate</div>
+        </div>
+      </div>
+      <div class="dc-grid">
+        <div class="dc-card">
+          <div class="dc-card-h">
+            <h3 id="dcPtTitle">Citation rate by page format</h3>
+            <span class="dc-card-sub" id="dcPtSub"></span>
+          </div>
+          <div id="dcPageType" class="dc-pt"></div>
+          <div class="dc-insight" id="dcPtInsight"></div>
+        </div>
+        <div class="dc-card">
+          <div class="dc-card-h">
+            <h3 id="dcLocaleTitle">Locale performance</h3>
+            <span class="dc-card-sub" id="dcLocaleSub"></span>
+          </div>
+          <div id="dcLocale" class="dc-locale"></div>
+          <div class="dc-insight" id="dcLocaleInsight"></div>
+        </div>
+        <div class="dc-card dc-card-wide">
+          <div class="dc-card-h">
+            <h3 id="dcLeakyTitle">Retrieved but not cited</h3>
+            <span class="dc-card-sub" id="dcLeakySub"></span>
+          </div>
+          <div id="dcLeaky" class="dc-leaky"></div>
+          <div class="dc-insight" id="dcLeakyInsight"></div>
+        </div>
+        <div class="dc-card dc-card-wide">
+          <div class="dc-card-h">
+            <h3 id="dcTopicTitle">Topic coverage gaps</h3>
+            <span class="dc-card-sub" id="dcTopicSub"></span>
+          </div>
+          <div id="dcTopic" class="dc-topic"></div>
+          <div class="dc-insight" id="dcTopicInsight"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHO IS TELLING THE STORY -->
+    <section class="panel">
+      <div class="panel-header">
+        <h2>Who's telling HP's story</h2>
+        <span class="panel-sub">The top articles retrieved by AI this week, sourced from Peec's domain and URL reports. Each framing claim is tagged Verified or Inferred.</span>
+      </div>
+      <div id="storytellers" class="storyteller-grid"></div>
+    </section>
+
+    <!-- THE ONE MOVE -->
+    <section class="panel move-panel">
+      <div class="panel-header">
+        <h2>The one move this week</h2>
+        <span class="panel-sub">Single highest-leverage action - including the pitch you can copy and send.</span>
+      </div>
+      <div id="move" class="move"></div>
+    </section>
+
+    <!-- METHODOLOGY -->
+    <details class="panel methodology-panel">
+      <summary class="methodology-summary">
+        <span class="methodology-h">Methodology</span>
+        <span class="panel-sub">How Narrator classifies and where it gets data from</span>
+      </summary>
+      <div id="methodology" class="methodology"></div>
+    </details>
+
+    <footer class="footer">
+      <div>Built with <a href="https://peec.ai" target="_blank" rel="noopener">Peec AI</a> MCP · #BuiltWithPeec</div>
+      <div class="gen">Generated <span id="generatedAt">…</span></div>
+    </footer>
+  </main>
+
+  <script src="app.js?v=10"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "narrator",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Narrator - the narrative layer on top of Peec AI's MCP. Built for the #BuiltWithPeec challenge.",
+  "scripts": {
+    "start": "python -m http.server 8080 -d dashboard",
+    "auth": "node scripts/auth.mjs",
+    "refresh": "node scripts/agent.mjs",
+    "instructions": "node scripts/print-refresh-instructions.mjs"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.40.0",
+    "@modelcontextprotocol/sdk": "^1.18.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

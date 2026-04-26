@@ -1,0 +1,342 @@
+{
+  "name": "Narrator - weekly Peec narrative",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Narrator - Weekly Peec Narrative Workflow\n\nThis workflow runs every Monday morning. It reads the AI search responses behind your Peec data, classifies how your brand is positioned in each sentence (primary / alternative / alongside / absent), surfaces the articles writing your AI narrative, and ships a CMO-ready briefing as both a JSON dataset and an email.\n\nBuilt for the **#BuiltWithPeec** challenge.",
+        "height": 280,
+        "width": 540,
+        "color": 7
+      },
+      "id": "73ab6a90-1a92-4b2f-9151-4a8b1ce03b21",
+      "name": "Workflow overview",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-360, -260]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtDay": [1],
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "id": "5f1eafc3-9b25-4d4f-bd8d-7ad3afaa1c20",
+      "name": "Every Monday 08:00",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [-200, 60]
+    },
+    {
+      "parameters": {},
+      "id": "fd7c4bdc-c75d-4f9b-b146-23b51c8e8ed1",
+      "name": "Manual run",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [-200, 240]
+    },
+    {
+      "parameters": {
+        "content": "### 1. Triggers\n\n**Every Monday 08:00** fires the weekly run. **Manual run** is for testing.\n\nBoth feed the same downstream branch.",
+        "height": 220,
+        "width": 280
+      },
+      "id": "8a35a3df-9b80-4bf9-9f7b-cda50bc4daa2",
+      "name": "Sticky · 1 triggers",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-380, 0]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a1",
+              "name": "brand",
+              "value": "HP",
+              "type": "string"
+            },
+            {
+              "id": "a2",
+              "name": "competitor_focus",
+              "value": "Dell",
+              "type": "string"
+            },
+            {
+              "id": "a3",
+              "name": "window_days",
+              "value": 7,
+              "type": "number"
+            },
+            {
+              "id": "a4",
+              "name": "peec_app_base",
+              "value": "https://app.peec.ai",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2e92f7e0-7c2a-4891-b9b6-0d5dfb1d0181",
+      "name": "Set brand context",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [40, 150]
+    },
+    {
+      "parameters": {
+        "content": "### 2. Brand context\n\nThe target brand and competitor to compare. Edit this node to retarget the workflow to a different brand without touching anything else.",
+        "height": 200,
+        "width": 280,
+        "color": 4
+      },
+      "id": "11b2f5dd-04ad-4fbc-9b77-ef8e6e2a0c1c",
+      "name": "Sticky · 2 context",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [40, -60]
+    },
+    {
+      "parameters": {
+        "endpointUrl": "https://api.peec.ai/mcp",
+        "serverTransport": "httpStreamable",
+        "authentication": "bearerAuth"
+      },
+      "id": "c2f7c5a9-0a2c-485e-b97a-6e5b1c61f98a",
+      "name": "Peec AI · MCP",
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1,
+      "position": [560, 320],
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "PEEC_BEARER_CREDENTIAL_ID",
+          "name": "Peec MCP bearer"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-sonnet-4-5"
+        },
+        "options": {
+          "maxTokensToSample": 16000,
+          "temperature": 0.2
+        }
+      },
+      "id": "5d2cdf9e-2f51-4a4d-9e72-5b32a51c1f7b",
+      "name": "Claude Sonnet 4.5",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [380, 320],
+      "credentials": {
+        "anthropicApi": {
+          "id": "ANTHROPIC_CREDENTIAL_ID",
+          "name": "Anthropic API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Generate the Narrator weekly report for brand \"{{ $json.brand }}\" comparing against \"{{ $json.competitor_focus }}\" over the last {{ $json.window_days }} days.\n\nUse the Peec MCP tools available to you. Follow this rubric exactly.\n\n## What to do\n\n1. Call list_projects → pick the active project.\n2. Call list_brands → confirm the own brand and competitor IDs.\n3. Call list_models, list_topics, list_prompts to map IDs to names.\n4. Call get_brand_report with dimensions [model_id], [topic_id], and [model_id, topic_id] for the own brand and the competitor.\n5. Call get_domain_report and get_url_report to find the top 6 editorial / corporate sources mentioning the own brand.\n6. Call list_chats + get_chat for 4–6 sampled chats across active models and topics.\n\n## Classification rubric (read each chat text)\n\n- primary: own brand is the lead recommendation (\"Best Overall\", \"our top pick\", brand mentioned first with no hedging)\n- alternative: own brand follows a different lead (\"or similar from\", \"top alternates\", \"you could also consider\")\n- alongside: own brand listed in a peer group (\"brands like A, own, C, D\")\n- absent: own brand not mentioned at all\n\nFor each classified chat, capture: model, prompt text, the exact quoted sentence, a 2–6 word hp_context substring to highlight, and the classification.\n\n## Storyteller attribution\n\nFor each top source: tag hp_framing as primary | alternative | alongside | absent-or-weak. Set framing_source to \"verified\" only if you read a chat that cites the URL and the framing is unambiguous; otherwise \"inferred\" with a specific framing_evidence note.\n\n## Compute the Alternative Index\n\nheadline_pct = round(alternative_rate * 100). confidence = \"directional\" if sample_size < 15, else \"validated\".\n\n## The one move\n\nPick the topic where the own brand visibility is lowest AND competitor visibility is meaningfully higher. Build move.headline + body + owner + timeline + expected_impact + a copy-send pitch_template { to, subject, body, success_metric } targeting the editor of the top article driving the gap.\n\n## Output format - REQUIRED\n\nReturn EXACTLY one fenced ```json``` code block. No prose outside it. The block must contain:\n\n{\n  \"data\": { ...full Narrator data.json schema... },\n  \"report_md\": \"...500–700 word client briefing in markdown...\",\n  \"summary\": \"...one sentence confirming the run...\"\n}\n\nThe data object must include keys: meta, alt_index, methodology, evidence, per_ai, ai_topic_matrix, category_ownership, storytellers, move. Use exact key names so downstream nodes can write the JSON to disk.",
+        "options": {
+          "systemMessage": "You are Narrator, a senior GEO/AI-search analyst. You read the actual sentences inside AI responses (not just metric counts) and classify how the user's brand is structurally positioned. You are honest about confidence - flag inferences as \"inferred\" rather than asserting them. You produce one executable action per run, not a list."
+        }
+      },
+      "id": "9a512f0e-1f41-4b21-a7f7-5fae2bce41d7",
+      "name": "AI Agent (Narrator)",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [380, 150]
+    },
+    {
+      "parameters": {
+        "content": "### 3. Agent loop\n\n**AI Agent** is the brain. **Claude Sonnet 4.5** does the reasoning. **Peec AI · MCP** exposes Peec's tools (list_projects, list_brands, get_brand_report, list_chats, get_chat, get_domain_report, get_url_report …).\n\nThe agent chains tool calls autonomously, reads sampled chat text, classifies framing using the 4-class rubric in the prompt, and emits one structured JSON payload.\n\n_Hook your Anthropic API key + Peec MCP bearer (from npm run auth) into the credentials._",
+        "height": 300,
+        "width": 380,
+        "color": 5
+      },
+      "id": "c3c1c5d6-4d54-4e67-bb75-bd6c64e58f30",
+      "name": "Sticky · 3 agent",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [340, -160]
+    },
+    {
+      "parameters": {
+        "language": "javaScript",
+        "jsCode": "// Pull the agent's text output, locate the fenced JSON block, parse it.\nconst raw = $input.first().json.output || $input.first().json.text || '';\n\nfunction extractFencedJson(text) {\n  const fenced = text.match(/```json\\s*([\\s\\S]+?)```/);\n  if (fenced) return fenced[1].trim();\n  const start = text.indexOf('{');\n  const end = text.lastIndexOf('}');\n  if (start !== -1 && end !== -1 && end > start) return text.slice(start, end + 1);\n  return null;\n}\n\nconst jsonText = extractFencedJson(raw);\nif (!jsonText) {\n  throw new Error('Could not find a JSON block in the agent output. First 400 chars: ' + raw.slice(0, 400));\n}\n\nlet parsed;\ntry {\n  parsed = JSON.parse(jsonText);\n} catch (err) {\n  throw new Error('Agent output JSON failed to parse: ' + err.message);\n}\nif (!parsed.data) throw new Error('Agent output missing required data field.');\n\nreturn [{\n  json: {\n    data: parsed.data,\n    report_md: parsed.report_md || '',\n    summary: parsed.summary || '',\n    data_pretty: JSON.stringify(parsed.data, null, 2),\n  },\n}];"
+      },
+      "id": "e0a3f5ab-8b6a-4dd3-b2b1-93e451eddae3",
+      "name": "Parse agent output",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [780, 150]
+    },
+    {
+      "parameters": {
+        "content": "### 4. Parse + validate\n\nPulls the fenced ```json``` block from the agent's response, parses it, and validates the schema. Throws if anything is malformed so the run fails loud rather than emailing garbage.",
+        "height": 220,
+        "width": 320,
+        "color": 3
+      },
+      "id": "2bf4a6f0-7c52-4f4d-aa86-30ed8a9e3a02",
+      "name": "Sticky · 4 parse",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [780, -100]
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "=/data/narrator/data.json",
+        "dataPropertyName": "data_pretty",
+        "options": {
+          "encoding": "utf8"
+        }
+      },
+      "id": "1cb02b8b-cdd3-462f-9c20-8e9c4a0c8c91",
+      "name": "Write data.json",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [1080, 60]
+    },
+    {
+      "parameters": {
+        "fromEmail": "narrator@yourdomain.com",
+        "toEmail": "marketing-leadership@yourdomain.com",
+        "subject": "=Narrator weekly - {{ $('Set brand context').item.json.brand }} - {{ $now.format('LLL d, y') }}",
+        "emailFormat": "html",
+        "html": "={{ $json.report_md }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "b62aff33-d8d1-46df-940a-95ad5e22a721",
+      "name": "Email weekly report (SMTP)",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [1080, 250],
+      "credentials": {
+        "smtp": {
+          "id": "SMTP_CREDENTIAL_ID",
+          "name": "Generic SMTP"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "### 5. Outputs\n\n**Write data.json** updates the dashboard's source of truth - wire this to GitHub Push, S3, or any persistent store.\n\n**Email weekly report** ships the markdown as HTML over your SMTP credential. Configure From / To at this node.\n\nThe dashboard at localhost:8080 and the report at /report.html both read the JSON your workflow just wrote. No frontend changes needed.",
+        "height": 320,
+        "width": 380,
+        "color": 6
+      },
+      "id": "d5b9c7c1-3a18-4ddd-9c83-43c2c19e7bd0",
+      "name": "Sticky · 5 outputs",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [1060, -160]
+    }
+  ],
+  "connections": {
+    "Every Monday 08:00": {
+      "main": [
+        [
+          {
+            "node": "Set brand context",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manual run": {
+      "main": [
+        [
+          {
+            "node": "Set brand context",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set brand context": {
+      "main": [
+        [
+          {
+            "node": "AI Agent (Narrator)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent (Narrator)": {
+      "main": [
+        [
+          {
+            "node": "Parse agent output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claude Sonnet 4.5": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent (Narrator)",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Peec AI · MCP": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent (Narrator)",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse agent output": {
+      "main": [
+        [
+          {
+            "node": "Write data.json",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Email weekly report (SMTP)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": false
+  }
+}

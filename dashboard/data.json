@@ -1,0 +1,460 @@
+{
+  "meta": {
+    "brand": "HP",
+    "own_brand_id": "kw_3cf6ab2c-e329-4487-942a-9f78b0caef01",
+    "project_id": "or_926d43e8-6e28-47ca-adc4-ceeb93256dba",
+    "peec_app_base": "https://app.peec.ai",
+    "competitor_focus": "Dell",
+    "window_label": "Apr 17 to Apr 23, 2026",
+    "total_chats": 232,
+    "chats_mentioning_hp": 131,
+    "chats_classified": 4,
+    "active_ais": ["ChatGPT", "Perplexity", "AI Overview"],
+    "generated_at": "2026-04-23T16:00:00Z"
+  },
+  "alt_index": {
+    "headline_pct": 50,
+    "headline_label": "HP is framed as 'the alternative' in 50% of classified chats",
+    "sample_size": 4,
+    "confidence": "directional",
+    "confidence_note": "4 of 131 HP-mentioning chats classified this week. Signal matches Peec's position metric (2.4) and the Dell-first pattern seen across sources. To promote from directional to validated, classify 30+ chats.",
+    "primary_rate": 0.25,
+    "alternative_rate": 0.50,
+    "alongside_rate": 0.25,
+    "sentiment_for_reference": 65,
+    "position_for_reference": 2.4,
+    "explainer": "Peec gives you sentiment 65 and avg position 2.4. Neither tells you whether AI puts HP as the recommendation or as the 'or similar' alternative. Narrator reads the text and classifies the framing."
+  },
+  "methodology": {
+    "title": "How the framing is classified",
+    "items": [
+      { "label": "Primary", "desc": "HP is the lead recommendation. Phrases like 'Best Overall', 'our top pick', 'the recommendation' appear before HP's name." },
+      { "label": "Alternative", "desc": "HP appears after a competitor's lead, in phrases like 'or similar from HP', 'top alternates: HP', 'you could also consider HP'." },
+      { "label": "Alongside", "desc": "HP is listed in a peer group without a clear leader: 'brands like Brother, HP, Canon, Xerox'." },
+      { "label": "Absent", "desc": "HP is not mentioned in the response, even when the prompt is in a relevant topic." }
+    ],
+    "process": "Sampled chats are read end-to-end. HP's mention position + surrounding phrasing is classified against the rubric above. Quantitative fields (visibility, sentiment, position) are pulled exact from Peec."
+  },
+  "vs_peec": {
+    "headline": "Why Narrator is a layer on top of Peec, not a replacement",
+    "rows": [
+      { "peec": "Sentiment score (65)", "narrator": "The adjectives driving it: \"workhorse, reliable, established\"" },
+      { "peec": "Average position (2.4)", "narrator": "Whether you're framed as THE pick or THE alternative (the Alternative Index)" },
+      { "peec": "Domain retrieval %", "narrator": "Which article authored the narrative + the move to respond" },
+      { "peec": "Top 7 brands table", "narrator": "Cross-topic category ownership map (you own X, you're invisible on Y)" }
+    ]
+  },
+  "evidence": [
+    {
+      "model": "ChatGPT",
+      "prompt": "Recommend a fast desktop PC for home use.",
+      "quote": "Dell XPS Desktop (or similar from HP Omen / Lenovo Legion for power users)",
+      "hp_context": "or similar from HP Omen",
+      "classification": "alternative",
+      "chat_id": "ch_473e797f-6015-402e-a4df-aae1b5e955d6"
+    },
+    {
+      "model": "Perplexity",
+      "prompt": "Recommend a fast desktop PC for home use.",
+      "quote": "Direct recommendation: Dell XPS 8960 ... Top alternates by budget: HP Elite Vision or Acer Aspire TC",
+      "hp_context": "Top alternates by budget: HP Elite Vision",
+      "classification": "alternative",
+      "chat_id": "ch_43eb000d-434b-4fc7-b85d-199e1623ed03"
+    },
+    {
+      "model": "AI Overview",
+      "prompt": "Which printer subscription offers the best value for small offices under $50 monthly?",
+      "quote": "Best Overall for Small Offices: HP All-In Plan (OfficeJet Pro). Plans start around $14.99/month...",
+      "hp_context": "Best Overall for Small Offices: HP All-In Plan",
+      "classification": "primary",
+      "chat_id": "ch_1545a02a-9c8e-432a-bfc4-5a39163479e9"
+    },
+    {
+      "model": "Perplexity",
+      "prompt": "Compare the reliability of modern multifunction business printers for corporate environments.",
+      "quote": "Brands with established enterprise service networks (e.g., Brother, HP, Canon, Xerox) tend to offer shorter downtime...",
+      "hp_context": "Brother, HP, Canon, Xerox",
+      "classification": "alongside",
+      "chat_id": "ch_12b542c2-7bef-4f13-9f5d-339dc8d3ef92"
+    }
+  ],
+  "per_ai": [
+    {
+      "model": "ChatGPT",
+      "visibility": 0.55,
+      "sentiment": 63,
+      "position": 2.1,
+      "dominant_framing": "alternative",
+      "unique_signal": "Strongest 'Dell-first' bias. Position metric is the lowest (2.1) AND framing is alternative - confirming HP is numerically mentioned early, but syntactically bracketed as the alternative.",
+      "monitor_visibility": 0.08
+    },
+    {
+      "model": "Perplexity",
+      "visibility": 0.55,
+      "sentiment": 65,
+      "position": 2.4,
+      "dominant_framing": "alternative",
+      "unique_signal": "Uses a 'Direct recommendation / Top alternates' response structure. HP lives in the alternates section on desktop prompts but leads on some business printer prompts.",
+      "monitor_visibility": 0.13
+    },
+    {
+      "model": "AI Overview",
+      "visibility": 0.63,
+      "sentiment": 68,
+      "position": 3.2,
+      "dominant_framing": "primary-or-absent",
+      "unique_signal": "Highest sentiment (68) and most bipolar - lists HP as 'Best Overall' on subscription prompts, but returns zero HP visibility on monitor or market-leader prompts.",
+      "monitor_visibility": 0.00
+    }
+  ],
+  "ai_topic_matrix": {
+    "note": "Visibility (0-1) by AI engine × topic. Pulled exact from Peec with dimensions=[model_id, topic_id]. Click any topic to see the prompts behind it.",
+    "rows": [
+      {
+        "topic": "Reliable business printers",
+        "chatgpt": 0.83, "perplexity": 0.75, "ai_overview": 0.50,
+        "prompts": [
+          "Looking for a high-performance office printer with fast scanning capabilities.",
+          "Recommend a reliable business printer for my small office.",
+          "Compare the reliability of modern multifunction business printers for corporate environments.",
+          "Evaluate the long-term cost efficiency of enterprise-grade printing solutions.",
+          "Show me some dependable office printers available in Germany.",
+          "Which printers are best for professional document production?",
+          "Find me a durable printer for high-volume business tasks.",
+          "Best laser printers under 500 euros for home office use."
+        ]
+      },
+      {
+        "topic": "Office printing subscriptions",
+        "chatgpt": 0.71, "perplexity": 0.54, "ai_overview": 0.80,
+        "prompts": [
+          "Which printer subscription offers the best value for small offices under $50 monthly?",
+          "Recommend a monthly plan for office printing.",
+          "Show me easy ink delivery services.",
+          "List reliable office printing subscriptions that include hardware leasing options.",
+          "Find me a simple home printer subscription.",
+          "Where can I sign up for automated printer supplies?",
+          "Evaluate the sustainability impact of subscription-based printing models for enterprise environments.",
+          "Compare the cost-efficiency of managed print services versus individual cartridge purchases for small businesses."
+        ]
+      },
+      {
+        "topic": "High-performance desktops",
+        "chatgpt": 0.58, "perplexity": 0.79, "ai_overview": 0.75,
+        "prompts": [
+          "Recommend a fast desktop PC for home use.",
+          "Compare the top-tier workstation options for heavy multitasking needs.",
+          "Analyze current hardware benchmarks for professional-grade desktop computing systems.",
+          "Find me a powerful PC for my office in Berlin.",
+          "List desktop computers with 32GB RAM available for quick delivery in Germany.",
+          "Show me reliable desktops for daily tasks.",
+          "Best high performance computers for sale.",
+          "Where can I buy a high-performance desktop under 1500 euros?"
+        ]
+      },
+      {
+        "topic": "Computer monitor buying guide",
+        "chatgpt": 0.08, "perplexity": 0.13, "ai_overview": 0.00,
+        "prompts": [
+          "What are the best monitors for everyday computing?",
+          "Suggest a high-quality monitor for my desk setup.",
+          "List top-rated computer monitors with excellent color accuracy for home offices.",
+          "Show me reliable desktop displays available in Germany.",
+          "Evaluate the trade-offs between IPS and VA panels for professional monitor selection.",
+          "Identify current market leaders for high-performance displays in the German tech space.",
+          "Find me a good computer monitor for home use.",
+          "Which 27-inch monitors under 300 euros offer the best performance?"
+        ]
+      }
+    ]
+  },
+  "category_ownership": [
+    {
+      "topic": "Office printing subscriptions",
+      "hp_visibility": 0.68,
+      "hp_sov": 0.34,
+      "dell_visibility": 0,
+      "dell_sov": 0,
+      "verdict": "HP owns",
+      "insight": "HP is framed as primary here, driven by HP's own hp.com/all-in-plan page."
+    },
+    {
+      "topic": "Reliable business printers",
+      "hp_visibility": 0.76,
+      "hp_sov": 0.20,
+      "dell_visibility": 0,
+      "dell_sov": 0,
+      "verdict": "HP owns",
+      "insight": "Highest visibility, but HP is typically listed alongside Brother, Canon, Xerox rather than as the single pick."
+    },
+    {
+      "topic": "High-performance desktop computers",
+      "hp_visibility": 0.70,
+      "hp_sov": 0.14,
+      "dell_visibility": 0.66,
+      "dell_sov": 0.16,
+      "verdict": "Contested",
+      "insight": "Visibility is even, but Dell has higher SOV and is almost always framed as primary. HP appears as the alternative."
+    },
+    {
+      "topic": "Computer monitor buying guide",
+      "hp_visibility": 0.09,
+      "hp_sov": 0.02,
+      "dell_visibility": 0.54,
+      "dell_sov": 0.15,
+      "verdict": "HP is invisible",
+      "insight": "Clearest gap. Dell owns this topic 6x over. PCWorld's home office monitor listicle is the single largest driver."
+    }
+  ],
+  "storytellers": [
+    {
+      "publication": "HP.com (All-In Plan)",
+      "domain": "hp.com",
+      "classification": "CORPORATE",
+      "article": "HP All-In Plan - Printer Plans",
+      "url": "https://hp.com/us-en/all-in-plan/printers.html",
+      "retrievals": 21,
+      "citations": 22,
+      "hp_framing": "primary",
+      "framing_source": "verified",
+      "framing_evidence": "ch_1545a02a: AI Overview quotes this page's framing verbatim - 'Best Overall for Small Offices: HP All-In Plan'.",
+      "effect": "HP's own page owns the 'best value subscription' narrative. AI Overview cites it verbatim.",
+      "action": "Protect and expand. Add a side-by-side vs Epson ReadyPrint and Brother Refresh."
+    },
+    {
+      "publication": "PCWorld",
+      "domain": "pcworld.com",
+      "classification": "EDITORIAL",
+      "article": "Best monitors for a home office 2026: Budget, 4K, ultrawide, portable",
+      "url": "https://pcworld.com/article/1389780/best-home-office-monitors.html",
+      "retrievals": 16,
+      "citations": 18,
+      "hp_framing": "absent-or-weak",
+      "framing_source": "inferred",
+      "framing_evidence": "Not verified from chat text. Inferred from: (1) HP's 9% visibility on monitor topic, (2) Dell's 54% on same, (3) this article is the top retrieved source on monitor prompts. Requires reading to confirm.",
+      "effect": "Largest single driver of HP's 9% monitor visibility gap.",
+      "action": "Pitch the PCWorld monitor editor with HP E-series review units + color data."
+    },
+    {
+      "publication": "Forbes Vetted",
+      "domain": "forbes.com",
+      "classification": "EDITORIAL",
+      "article": "Best Desktop Computers 2026 - Forbes Vetted",
+      "url": "https://forbes.com/sites/forbes-personal-shopper/article/best-desktop-computer",
+      "retrievals": 10,
+      "citations": 14,
+      "hp_framing": "alternative",
+      "framing_source": "verified",
+      "framing_evidence": "ch_473e797f + ch_43eb000d cite this page. Both position Dell XPS first, HP Omen as 'similar alternative'.",
+      "effect": "Dell-first ordering propagates through ChatGPT + Perplexity desktop responses.",
+      "action": "Brief Forbes Vetted editor on HP Omen AI differentiators."
+    },
+    {
+      "publication": "PCMag",
+      "domain": "pcmag.com",
+      "classification": "EDITORIAL",
+      "article": "The Best Business Printers We've Tested for 2026",
+      "url": "https://pcmag.com/picks/the-best-business-printers",
+      "retrievals": 9,
+      "citations": 4,
+      "hp_framing": "alongside",
+      "framing_source": "inferred",
+      "framing_evidence": "Inferred from Perplexity chat ch_12b542c2 which lists 'Brother, HP, Canon, Xerox' alongside - consistent with PCMag's multi-winner listicle style. Not verified by reading article.",
+      "effect": "Drives the 'alongside' framing on printer reliability.",
+      "action": "Pitch PCMag on an HP Enterprise Print deep-dive to earn top-pick callout."
+    },
+    {
+      "publication": "Consumer Reports",
+      "domain": "consumerreports.org",
+      "classification": "EDITORIAL",
+      "article": "Are Printer Ink Subscriptions Worth It?",
+      "url": "https://consumerreports.org/electronics-computers/printers/are-printer-ink-subscriptions-worth-it-a4050339657",
+      "retrievals": 8,
+      "citations": 11,
+      "hp_framing": "primary",
+      "framing_source": "inferred",
+      "framing_evidence": "Inferred from high citation rate (1.38) and strong HP subscription dominance. Not verified by reading article.",
+      "effect": "High-authority citation backing HP's subscription dominance.",
+      "action": "Protect. Monitor for any change in ordering."
+    },
+    {
+      "publication": "Windows Central",
+      "domain": "windowscentral.com",
+      "classification": "EDITORIAL",
+      "article": "Best Desktop PCs of 2026: 7 top picks",
+      "url": "https://windowscentral.com/best-desktop-pc",
+      "retrievals": 7,
+      "citations": 13,
+      "hp_framing": "alternative",
+      "framing_source": "inferred",
+      "framing_evidence": "Inferred from the general Dell-first pattern observed in other desktop articles and the article's high citation rate (1.86). Not verified by reading article.",
+      "effect": "Amplifies Dell-first ordering into Microsoft ecosystem readers.",
+      "action": "Pitch Windows Central on HP's Windows 11 AI-PC exclusives."
+    }
+  ],
+  "citation_footprint": {
+    "domain": "hp.com",
+    "note": "Pages on hp.com that AI engines actually cite. Grouped by section, sized by citation count. Pulled exact from Peec via get_url_report filtered by domain=hp.com over the last 30 days.",
+    "total_urls": 50,
+    "total_citations": 105,
+    "brand_names": {
+      "kw_3cf6ab2c-e329-4487-942a-9f78b0caef01": "HP",
+      "kw_3d0da21d-98fe-486e-a3eb-619a578c9dcd": "Dell",
+      "kw_8db2eef2-813f-4c08-afec-1b951fb40d9e": "Apple",
+      "kw_d08697a2-1a17-4625-bc7f-de3ad70ba1d3": "Intel",
+      "kw_31f23fc7-80f7-43cf-a527-8031f487257c": "AMD",
+      "kw_ff05b33f-babc-40c5-9701-8a37b8c088c0": "NVIDIA",
+      "kw_dde3f21f-ffe0-41fd-9958-920a81332bfb": "Epson",
+      "kw_c9ad9883-9388-471d-9649-d28e3abd6275": "Brother",
+      "kw_54ef127f-4030-4024-9246-0b5b572ee782": "Canon",
+      "kw_19da71ab-d71b-4e85-8882-157694cb8613": "Lenovo",
+      "kw_1e46d46f-a324-4db5-8b31-29798e3ca326": "Xerox",
+      "kw_753ba7a3-8217-42e7-9e41-8c9329797634": "Samsung",
+      "kw_2b8d7d87-cc69-4aee-8778-d144a15c38de": "ASUS",
+      "kw_4d38b12f-cbea-4af1-851d-ecbaef02cf0f": "BenQ",
+      "kw_699812a5-789c-45c1-9fef-ba0a7e753844": "Acer",
+      "kw_e18f1137-fba7-4d57-8e80-ab5fa82715b9": "Kyocera",
+      "kw_fafe1840-d7ef-448e-9f50-10882a470419": "Ricoh",
+      "kw_6c1354c5-6767-41a0-be38-69b126c53174": "Amazon"
+    },
+    "groups": [
+      {
+        "name": "All-In Plan",
+        "color": "#0096d6",
+        "pages": [
+          { "title": "HP All-In Plan - Printer Plans", "path": "/us-en/all-in-plan/printers.html", "url": "https://hp.com/us-en/all-in-plan/printers.html", "citations": 32, "retrievals": 39, "type": "PRODUCT_PAGE", "alongside": ["kw_3cf6ab2c-e329-4487-942a-9f78b0caef01"] },
+          { "title": "HP All-In Plan FAQs", "path": "/us-en/all-in-plan/faq.html", "url": "https://hp.com/us-en/all-in-plan/faq.html", "citations": 1, "retrievals": 2, "type": "PRODUCT_PAGE", "alongside": ["kw_3cf6ab2c-e329-4487-942a-9f78b0caef01"] },
+          { "title": "HP All-in-Plan Printers (Store)", "path": "/us-en/shop/cv/all-in-plan-printers", "url": "https://hp.com/us-en/shop/cv/all-in-plan-printers", "citations": 0, "retrievals": 2, "type": "CATEGORY_PAGE" }
+        ]
+      },
+      {
+        "name": "Instant Ink",
+        "color": "#14b8a6",
+        "pages": [
+          { "title": "HP Instant Ink Subscription (Store)", "path": "/us-en/shop/cv/instantink", "url": "https://hp.com/us-en/shop/cv/instantink", "citations": 12, "retrievals": 11, "type": "CATEGORY_PAGE" },
+          { "title": "HP Instant Ink - Printer Ink Subscription", "path": "/us-en/printers/instant-ink.html", "url": "https://hp.com/us-en/printers/instant-ink.html", "citations": 10, "retrievals": 10, "type": "PRODUCT_PAGE", "alongside": ["kw_3cf6ab2c-e329-4487-942a-9f78b0caef01"] },
+          { "title": "HP Instant Ink Plans (UK)", "path": "/gb-en/shop/offer.aspx?p=c-instantinkpickaplan", "url": "https://hp.com/gb-en/shop/offer.aspx?p=c-instantinkpickaplan", "citations": 2, "retrievals": 6, "type": "PRODUCT_PAGE", "alongside": ["kw_3cf6ab2c-e329-4487-942a-9f78b0caef01"] },
+          { "title": "HP Instant Ink (UK)", "path": "/gb-en/printers/instant-ink.html", "url": "https://hp.com/gb-en/printers/instant-ink.html", "citations": 1, "retrievals": 4, "type": "PRODUCT_PAGE", "alongside": ["kw_3cf6ab2c-e329-4487-942a-9f78b0caef01"] },
+          { "title": "HP Instant Ink (AU)", "path": "/au-en/printers/instant-ink.html", "url": "https://hp.com/au-en/printers/instant-ink.html", "citations": 0, "retrievals": 2, "type": "PRODUCT_PAGE", "alongside": ["kw_3cf6ab2c-e329-4487-942a-9f78b0caef01"] }
+        ]
+      },
+      {
+        "name": "Tech Takes (content hub)",
+        "color": "#8b5cf6",
+        "pages": [
+          { "title": "Office Printer: Lease or Buy?", "path": "/us-en/shop/tech-takes/office-printer-lease-or-buy", "url": "https://hp.com/us-en/shop/tech-takes/office-printer-lease-or-buy", "citations": 5, "retrievals": 6, "type": "ARTICLE" },
+          { "title": "Top Multifunction Printers for Small Business (UK)", "path": "/gb-en/shop/tech-takes/hp-multifunction-printers-small-business-comparison", "url": "https://hp.com/gb-en/shop/tech-takes/hp-multifunction-printers-small-business-comparison", "citations": 4, "retrievals": 6, "type": "COMPARISON" },
+          { "title": "HP Instant Ink Plans Program Guide", "path": "/us-en/shop/tech-takes/hp-instant-ink-plans-program-guide", "url": "https://hp.com/us-en/shop/tech-takes/hp-instant-ink-plans-program-guide", "citations": 2, "retrievals": 4, "type": "CATEGORY_PAGE" },
+          { "title": "Top HP Desktops UK 2025", "path": "/gb-en/shop/tech-takes/best-new-hp-desktops", "url": "https://hp.com/gb-en/shop/tech-takes/best-new-hp-desktops", "citations": 0, "retrievals": 4, "type": "LISTICLE" },
+          { "title": "4 Ways Printing as a Service", "path": "/us-en/shop/tech-takes/4-ways-printing-as-a-service", "url": "https://hp.com/us-en/shop/tech-takes/4-ways-printing-as-a-service-can-make-your-life-easier", "citations": 2, "retrievals": 2, "type": "CATEGORY_PAGE" },
+          { "title": "HP OMEN Gaming PCs 2025", "path": "/us-en/shop/tech-takes/what-are-the-best-gaming-pcs", "url": "https://hp.com/us-en/shop/tech-takes/what-are-the-best-gaming-pcs", "citations": 1, "retrievals": 2, "type": "LISTICLE" }
+        ]
+      },
+      {
+        "name": "Managed services & B2B",
+        "color": "#f59e0b",
+        "pages": [
+          { "title": "HP Managed Print Services", "path": "/us-en/services/workforce-solutions/document-printing/managed-print-services.html", "url": "https://hp.com/us-en/services/workforce-solutions/document-printing/managed-print-services.html", "citations": 4, "retrievals": 2, "type": "PRODUCT_PAGE", "alongside": ["kw_3cf6ab2c-e329-4487-942a-9f78b0caef01"] },
+          { "title": "Business Printers", "path": "/us-en/printers/business-printers.html", "url": "https://hp.com/us-en/printers/business-printers.html", "citations": 1, "retrievals": 2, "type": "CATEGORY_PAGE" },
+          { "title": "Business Computers for Offices", "path": "/us-en/business-solutions/business-computers.html", "url": "https://hp.com/us-en/business-solutions/business-computers.html", "citations": 0, "retrievals": 1, "type": "CATEGORY_PAGE" }
+        ]
+      },
+      {
+        "name": "Large format & specialty",
+        "color": "#ec4899",
+        "pages": [
+          { "title": "Top 7 Professional Large Format Printers", "path": "/uk/blog/top-7-professional-large-format-printers", "url": "https://largeformat.hp.com/uk/blog/top-7-professional-large-format-printers-to-buy-in-2024", "citations": 4, "retrievals": 8, "type": "LISTICLE" }
+        ]
+      },
+      {
+        "name": "Press & whitepapers",
+        "color": "#737373",
+        "pages": [
+          { "title": "HP Print Management whitepaper (PDF)", "path": "/canada/portal/.../HP-PrintManagement.pdf", "url": "https://hp.com/canada/portal/e-assets/productcontent/Whitepapers/HP-PrintManagement.pdf", "citations": 0, "retrievals": 3, "type": "OTHER" },
+          { "title": "HP Simplifies Managed Print Services (press release)", "path": "/us-en/newsroom/press-releases/2021/hp-simplifies-managed-print-services.html", "url": "https://hp.com/us-en/newsroom/press-releases/2021/hp-simplifies-managed-print-services.html", "citations": 0, "retrievals": 2, "type": "ARTICLE" }
+        ]
+      }
+    ],
+    "insights": [
+      { "label": "Top cited page", "value": "/us-en/all-in-plan/printers.html", "detail": "32 citations, 39 retrievals. Single biggest driver of HP's subscription win." },
+      { "label": "Strongest cluster", "value": "All-In Plan + Instant Ink", "detail": "57 of 105 total citations (54%). HP's content moat is concentrated on the subscription product line." },
+      { "label": "Underperforming cluster", "value": "Tech Takes content hub", "detail": "30+ pages but only 14 citations. High publishing volume, low AI traction." },
+      { "label": "Visible gap", "value": "Monitor pages absent", "detail": "Zero hp.com monitor URLs appear in cited results, despite the topic being tracked. Aligns with HP's 9% monitor visibility gap." }
+    ]
+  },
+  "deepcrawl": {
+    "title": "Deep crawl insights",
+    "subtitle": "What your domain looks like through AI's lens. 50 pages indexed by Peec, 38 cited, 12 retrieved-but-rejected.",
+    "stats": {
+      "indexed": 38,
+      "retrieved_only": 12,
+      "total_seen": 50,
+      "indexing_rate": 0.76
+    },
+    "page_type_performance": {
+      "title": "Citation rate by page format",
+      "subtitle": "Which content formats AI engines actually quote.",
+      "rows": [
+        { "type": "PRODUCT_PAGE",  "pages": 14, "avg_citation_rate": 0.62, "total_citations": 51 },
+        { "type": "CATEGORY_PAGE", "pages": 9,  "avg_citation_rate": 0.42, "total_citations": 16 },
+        { "type": "ARTICLE",       "pages": 2,  "avg_citation_rate": 0.42, "total_citations": 5 },
+        { "type": "COMPARISON",    "pages": 3,  "avg_citation_rate": 0.39, "total_citations": 6 },
+        { "type": "LISTICLE",      "pages": 9,  "avg_citation_rate": 0.06, "total_citations": 7 },
+        { "type": "HOW_TO_GUIDE",  "pages": 1,  "avg_citation_rate": 0.67, "total_citations": 2 },
+        { "type": "OTHER",         "pages": 12, "avg_citation_rate": 0.45, "total_citations": 18 }
+      ],
+      "insight": "PRODUCT_PAGE and HOW_TO_GUIDE win. LISTICLEs (Tech Takes) underperform at 0.06 citation rate, suggesting AI prefers HP's structured product content over its blog-style listicles."
+    },
+    "leaky_pages": {
+      "title": "Retrieved but not cited",
+      "subtitle": "AI fetched these pages but didn't quote them. Either content quality, format, or relevance is off.",
+      "rows": [
+        { "title": "Top HP Desktops UK 2025",                       "path": "/gb-en/shop/tech-takes/best-new-hp-desktops",                            "retrievals": 4, "citations": 0, "type": "LISTICLE" },
+        { "title": "Your Office Printer: Lease or Buy? (HK)",        "path": "/hk-en/shop/tech-takes/post/your-office-printer-lease-or-buy",          "retrievals": 4, "citations": 0, "type": "COMPARISON" },
+        { "title": "Instant Ink FAQ for SMBs (UK)",                  "path": "/gb-en/shop/tech-takes/faq-hp-instant-ink-small-businesses",            "retrievals": 3, "citations": 0, "type": "CATEGORY_PAGE" },
+        { "title": "HP Print Management whitepaper (PDF)",           "path": "/canada/portal/.../HP-PrintManagement.pdf",                              "retrievals": 3, "citations": 0, "type": "OTHER" },
+        { "title": "HP Instant Ink (AU)",                            "path": "/au-en/printers/instant-ink.html",                                       "retrievals": 2, "citations": 0, "type": "PRODUCT_PAGE", "alongside": ["kw_3cf6ab2c-e329-4487-942a-9f78b0caef01"] },
+        { "title": "Economical Printers for Small Business (UK)",   "path": "/gb-en/shop/tech-takes/economical-printers-small-business",             "retrievals": 2, "citations": 0, "type": "LISTICLE" }
+      ],
+      "insight": "Six pages were retrieved but produced zero citations. Action: review titles + meta + first 200 words. AI rejected them after fetching."
+    },
+    "locale_performance": {
+      "title": "Locale performance",
+      "subtitle": "AI engines cite hp.com locales unevenly. The us-en variant carries most of the citation load.",
+      "rows": [
+        { "locale": "us-en", "pages": 23, "citations": 80, "share": 0.76 },
+        { "locale": "gb-en", "pages": 11, "citations": 12, "share": 0.11 },
+        { "locale": "au-en", "pages": 4,  "citations": 4,  "share": 0.04 },
+        { "locale": "de-de", "pages": 2,  "citations": 1,  "share": 0.01 },
+        { "locale": "in-en", "pages": 2,  "citations": 1,  "share": 0.01 },
+        { "locale": "other", "pages": 8,  "citations": 7,  "share": 0.07 }
+      ],
+      "insight": "us-en captures 76% of citations. EU/APAC mirrors are visible but underleveraged. Localizing top-performing us-en pages to gb-en and de-de is a low-effort multiplier."
+    },
+    "topic_coverage": {
+      "title": "Topic coverage gaps",
+      "subtitle": "Peec topics × HP own-domain pages cited. Where there are no green dots, AI has no HP page to fall back on.",
+      "rows": [
+        { "topic": "Office printing subscriptions",  "hp_pages_cited": 16, "verdict": "covered" },
+        { "topic": "Reliable business printers",     "hp_pages_cited": 6,  "verdict": "covered" },
+        { "topic": "High-performance desktops",      "hp_pages_cited": 4,  "verdict": "thin" },
+        { "topic": "Best home office laptops",       "hp_pages_cited": 1,  "verdict": "thin" },
+        { "topic": "Computer monitor buying guide",  "hp_pages_cited": 0,  "verdict": "missing" }
+      ],
+      "insight": "Zero hp.com pages cited on the monitor topic. The 9% visibility gap on monitors is a content gap, not just a PR gap. Publish 3-5 monitor product/comparison pages."
+    }
+  },
+  "move": {
+    "headline": "Win the monitor topic, or concede it",
+    "body": "You own printers (76%) and subscriptions (68%). You're contested on desktops. You're effectively invisible on monitors: 9% visibility vs Dell's 54%, and 0% visibility in AI Overview responses. One article drives most of the gap: PCWorld's 'Best monitors for a home office 2026' (16 retrievals, 18 citations this week). Get HP E-series monitors into that article with review units and color-accuracy data - you'll see measurable monitor lift within 2 weeks.",
+    "owner": "Product PR + Monitor category lead",
+    "timeline": "14 days",
+    "expected_impact": "+20 to +30 pp on monitor visibility",
+    "pitch_template": {
+      "subject": "HP E-Series for your \"Best home office monitors 2026\" piece",
+      "to": "[PCWorld monitor editor]",
+      "body": "Hi [editor],\n\nNoticed your \"Best monitors for a home office 2026\" is the reference piece on this topic right now - it's being cited in 18 AI responses we're tracking this week.\n\nHP didn't land a spot. That's a miss worth fixing. The HP E-Series specifically targets the home office segment:\n  • Factory-calibrated color (ΔE<2) on the HP E24 G5 - matches the LG picks you featured\n  • 4-sided edge-to-edge at a ~€300 street price - fits the \"budget\" tier you called out\n  • Certified for eye-comfort (low-blue-light) + adjustable USB-C dock - the WFH productivity angle your piece leads with\n\nI can ship review units + independent color-accuracy data this week if useful.\n\nWould a 20-minute briefing with our monitor PM work?\n\nThanks,\n[HP PR]",
+      "success_metric": "HP E-Series referenced in the article within 14 days. Verify with Peec: monitor topic visibility for HP rises above 25%."
+    }
+  }
+}

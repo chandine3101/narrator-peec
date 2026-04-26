@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Narrator - Weekly Brand Narrative Report</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --body: #1f2937;
+      --muted: #6b7280;
+      --dim: #9ca3af;
+      --line: #e5e7eb;
+      --line-2: #f3f4f6;
+      --surface: #ffffff;
+      --tint: #f8fafc;
+      --accent: #0096d6;
+      --accent-soft: #e4f4fb;
+      --accent-ink: #005f8f;
+      --accent-border: #b7e0f2;
+      --peec: #ff4820;
+      --peec-soft: #fff1ec;
+      --peec-ink: #c22e00;
+      --good: #047857;
+      --good-soft: #ecfdf5;
+      --good-border: #a7f3d0;
+      --warn: #a16207;
+      --warn-soft: #fefce8;
+      --warn-border: #fde68a;
+      --bad: #b91c1c;
+      --bad-soft: #fef2f2;
+      --bad-border: #fecaca;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0;
+      background: #eef1f5;
+      color: var(--body);
+      font-family: "Inter", "Söhne", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, sans-serif;
+      font-feature-settings: "cv11";
+      -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.003em;
+    }
+    a { color: var(--accent-ink); text-decoration: underline; text-decoration-color: var(--accent-border); text-underline-offset: 3px; }
+    a:hover { text-decoration-color: var(--accent); }
+
+    .page {
+      max-width: 760px;
+      margin: 28px auto;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      padding: 56px 64px;
+      box-shadow: 0 4px 22px rgba(15,23,42,.06);
+      page-break-after: always;
+      break-after: page;
+    }
+    .page:last-child { page-break-after: auto; break-after: auto; }
+
+    /* COVER */
+    .cover { display: flex; flex-direction: column; min-height: 960px; justify-content: space-between; }
+    .cover-top { display: flex; align-items: center; justify-content: space-between; }
+    .logo {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-weight: 700; font-size: 16px; color: var(--ink); letter-spacing: -0.01em;
+    }
+    .logo-mark {
+      width: 28px; height: 28px; border-radius: 6px;
+      background: var(--ink); color: #fff;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700;
+    }
+    .confidential {
+      font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--muted); font-weight: 600;
+    }
+
+    .cover-title h1 {
+      font-size: 52px; line-height: 1.02; letter-spacing: -0.03em;
+      color: var(--ink); font-weight: 700; margin: 0;
+    }
+    .cover-title .brand-accent { color: var(--accent); }
+    .cover-title .deck { color: var(--muted); font-size: 16px; margin-top: 14px; max-width: 540px; line-height: 1.5; }
+
+    .cover-meta {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 28px 40px;
+      border-top: 1px solid var(--line);
+      padding-top: 28px;
+    }
+    .cover-meta .label {
+      font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--muted); font-weight: 600; margin-bottom: 6px;
+    }
+    .cover-meta .value { font-size: 14.5px; color: var(--ink); font-weight: 500; line-height: 1.4; }
+    .cover-meta .value a { font-weight: 500; }
+
+    /* CONTENTS */
+    .section-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 24px; }
+    .section-num {
+      display: inline-block;
+      font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--muted); font-weight: 600; margin-bottom: 4px;
+    }
+    .section-title { font-size: 22px; color: var(--ink); font-weight: 700; letter-spacing: -0.015em; margin: 0 0 10px; }
+    .section-subtitle { font-size: 13px; color: var(--muted); line-height: 1.55; margin-bottom: 20px; max-width: 580px; }
+
+    .toc { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0; }
+    .toc li {
+      display: grid; grid-template-columns: 40px 1fr 80px auto; gap: 14px; align-items: center;
+      padding: 14px 0; border-bottom: 1px solid var(--line-2);
+      font-size: 14px;
+    }
+    .toc li:last-child { border-bottom: none; }
+    .toc .n { color: var(--muted); font-variant-numeric: tabular-nums; font-weight: 500; }
+    .toc .t { color: var(--ink); font-weight: 500; }
+    .toc .tag { font-size: 10.5px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 600; }
+    .toc .pg { color: var(--muted); font-variant-numeric: tabular-nums; }
+
+    /* SECTION CONTENT */
+    .content p { font-size: 14px; line-height: 1.65; color: var(--body); margin: 0 0 12px; }
+    .content p.lead { font-size: 16px; line-height: 1.55; color: var(--ink); font-weight: 500; }
+    .content strong { color: var(--ink); font-weight: 600; }
+
+    .stat-hero {
+      display: flex; align-items: center; gap: 28px;
+      padding: 28px;
+      background: var(--accent-soft);
+      border: 1px solid var(--accent-border);
+      border-radius: 12px;
+      margin: 18px 0 22px;
+    }
+    .stat-hero-num {
+      font-size: 80px; line-height: 1; font-weight: 700;
+      color: var(--accent-ink); letter-spacing: -0.04em;
+      font-variant-numeric: tabular-nums;
+      min-width: 160px;
+    }
+    .stat-hero-body h3 {
+      font-size: 18px; font-weight: 600; color: var(--ink);
+      margin: 0 0 8px; line-height: 1.3;
+    }
+    .stat-hero-body p { font-size: 13px; color: var(--body); margin: 0; line-height: 1.55; }
+
+    .tag-pill {
+      display: inline-block; font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+      font-weight: 700; padding: 3px 8px; border-radius: 999px;
+    }
+    .tag-pill.directional { background: var(--warn-soft); color: var(--warn); border: 1px solid var(--warn-border); }
+    .tag-pill.validated { background: var(--good-soft); color: var(--good); border: 1px solid var(--good-border); }
+
+    table.report-table {
+      width: 100%; border-collapse: collapse;
+      margin: 8px 0 16px;
+      font-size: 13px;
+    }
+    .report-table th, .report-table td {
+      padding: 10px 12px; text-align: left;
+      border-bottom: 1px solid var(--line);
+    }
+    .report-table th {
+      font-size: 10.5px; text-transform: uppercase; letter-spacing: .08em;
+      color: var(--muted); font-weight: 600;
+      background: var(--tint);
+      border-bottom: 1px solid var(--line);
+    }
+    .report-table td.num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; color: var(--ink); }
+    .report-table td.brand { font-weight: 600; color: var(--ink); }
+
+    .framing {
+      font-size: 10.5px; padding: 3px 8px; border-radius: 999px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: .08em;
+      display: inline-block; border: 1px solid transparent;
+    }
+    .framing-primary { background: var(--good-soft); color: var(--good); border-color: var(--good-border); }
+    .framing-alternative { background: var(--bad-soft); color: var(--bad); border-color: var(--bad-border); }
+    .framing-alongside { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
+    .framing-absent, .framing-absent-or-weak { background: #f5f5f5; color: var(--muted); border-color: var(--line); }
+    .framing-primary-or-absent { background: var(--warn-soft); color: var(--warn); border-color: var(--warn-border); }
+
+    blockquote.quote {
+      margin: 8px 0;
+      padding: 10px 14px;
+      background: var(--tint);
+      border-left: 3px solid var(--dim);
+      border-radius: 6px;
+      font-size: 13px; color: var(--ink); line-height: 1.5;
+    }
+    blockquote.quote.primary { border-left-color: var(--good); }
+    blockquote.quote.alternative { border-left-color: var(--bad); }
+    blockquote.quote.alongside { border-left-color: #2563eb; }
+    .hp-hl { background: var(--accent-soft); color: var(--accent-ink); padding: 1px 5px; border-radius: 3px; font-weight: 600; }
+
+    .verdict {
+      font-size: 10.5px; padding: 3px 8px; border-radius: 999px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: .08em; border: 1px solid;
+    }
+    .verdict-own { background: var(--good-soft); color: var(--good); border-color: var(--good-border); }
+    .verdict-contested { background: var(--warn-soft); color: var(--warn); border-color: var(--warn-border); }
+    .verdict-invisible { background: var(--bad-soft); color: var(--bad); border-color: var(--bad-border); }
+
+    .mx td.cell {
+      text-align: center; font-weight: 700; font-variant-numeric: tabular-nums;
+      font-size: 14px;
+    }
+    .mx td.cell-high { background: var(--good-soft); color: var(--good); }
+    .mx td.cell-mid { background: var(--warn-soft); color: var(--warn); }
+    .mx td.cell-low { background: #fff7ed; color: #c2410c; }
+    .mx td.cell-zero { background: var(--bad-soft); color: var(--bad); }
+
+    .source-block {
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      margin-bottom: 10px;
+      background: var(--surface);
+    }
+    .source-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 6px; flex-wrap: wrap; }
+    .source-pub { font-weight: 600; color: var(--ink); font-size: 13.5px; }
+    .source-meta { font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+    .source-article { display: block; font-size: 13px; color: var(--body); margin-bottom: 8px; line-height: 1.45; }
+    .source-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+    .source-conf { font-size: 10px; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; padding: 2px 7px; border-radius: 999px; }
+    .source-conf.verified { background: var(--good-soft); color: var(--good); border: 1px solid var(--good-border); }
+    .source-conf.inferred { background: var(--warn-soft); color: var(--warn); border: 1px solid var(--warn-border); }
+    .source-row { font-size: 12px; color: var(--body); line-height: 1.55; margin-top: 4px; }
+    .source-row strong { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 600; margin-right: 6px; display: inline-block; }
+
+    .move-callout {
+      padding: 20px 22px;
+      background: linear-gradient(180deg, var(--surface), #f5fbfe);
+      border: 1px solid var(--accent-border);
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      margin: 12px 0 16px;
+    }
+    .move-callout h3 { font-size: 20px; color: var(--ink); font-weight: 700; margin: 0 0 10px; letter-spacing: -0.015em; }
+    .move-callout p { font-size: 13.5px; color: var(--body); line-height: 1.6; margin: 0 0 12px; }
+    .move-meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 12px; }
+    .move-meta .k { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 600; display: block; margin-bottom: 2px; }
+
+    .pitch-box {
+      margin-top: 14px;
+      padding: 16px 18px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+    .pitch-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+    .pitch-head-label { font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; color: var(--peec-ink); }
+    .pitch-mailto {
+      font-size: 12px; font-weight: 500; color: var(--surface);
+      background: var(--ink); padding: 6px 12px; border-radius: 999px;
+      text-decoration: none;
+    }
+    .pitch-mailto:hover { background: #000; text-decoration: none; }
+    .pitch-field { font-size: 12.5px; color: var(--body); margin-bottom: 4px; }
+    .pitch-field .l { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 600; margin-right: 8px; }
+    .pitch-body-text {
+      margin: 10px 0; padding: 12px 14px;
+      background: var(--tint);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      font-size: 12.5px; color: var(--ink); line-height: 1.6;
+      white-space: pre-wrap;
+      font-family: inherit;
+    }
+    .pitch-success { font-size: 12px; color: var(--body); line-height: 1.5; }
+
+    .footer-line {
+      font-size: 11px; color: var(--muted);
+      padding-top: 20px; margin-top: 28px;
+      border-top: 1px solid var(--line);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+
+    /* PRINT */
+    @media print {
+      @page { size: A4; margin: 14mm; }
+      body { background: #fff; }
+      .page {
+        margin: 0; border: none; padding: 0 0 20mm; box-shadow: none;
+        max-width: none;
+      }
+      .toolbar { display: none !important; }
+    }
+
+    /* Toolbar (web only) */
+    .toolbar {
+      position: sticky; top: 0; z-index: 10;
+      background: #fff; border-bottom: 1px solid var(--line);
+      padding: 12px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 10px;
+    }
+    .toolbar .back { font-size: 13px; color: var(--muted); text-decoration: none; }
+    .toolbar .back:hover { color: var(--ink); }
+    .toolbar-actions { display: flex; gap: 8px; }
+    .tb-btn {
+      font: inherit; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 14px; border-radius: 999px;
+      border: 1px solid var(--ink); background: var(--ink); color: #fff;
+      font-size: 12.5px; font-weight: 500;
+    }
+    .tb-btn:hover { background: #000; }
+    .tb-btn.ghost { background: #fff; color: var(--ink); }
+    .tb-btn.ghost:hover { background: var(--tint); }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <a class="back" href="/">← Back to dashboard</a>
+    <div class="toolbar-actions">
+      <button id="printBtn" class="tb-btn" type="button">Download PDF</button>
+      <a id="emailBtn" class="tb-btn ghost" href="#">Email this report</a>
+    </div>
+  </div>
+
+  <!-- COVER -->
+  <section class="page cover">
+    <div>
+      <div class="cover-top">
+        <div class="logo"><span class="logo-mark">N</span> Narrator</div>
+        <div class="confidential">Confidential</div>
+      </div>
+      <div class="cover-title" style="margin-top: 120px;">
+        <div class="section-num">Weekly Brand Narrative Report</div>
+        <h1>How AI talks about <span class="brand-accent" id="c_brand">HP</span>.</h1>
+        <p class="deck">A sentence-level read of AI search responses this week. Where the brand is the recommendation, where it's the alternative, who's writing the narrative, and the one move to make next.</p>
+      </div>
+    </div>
+
+    <div class="cover-meta">
+      <div>
+        <div class="label">Prepared for</div>
+        <div class="value" id="c_for">HP</div>
+      </div>
+      <div>
+        <div class="label">Reporting window</div>
+        <div class="value" id="c_window">…</div>
+      </div>
+      <div>
+        <div class="label">Report ID</div>
+        <div class="value" id="c_id">NAR-HP-…</div>
+      </div>
+      <div>
+        <div class="label">Prepared by</div>
+        <div class="value">Narrator · built on <a href="https://peec.ai" target="_blank" rel="noopener">Peec AI</a> MCP</div>
+      </div>
+      <div>
+        <div class="label">Source</div>
+        <div class="value"><a id="c_source" href="#" target="_blank" rel="noopener">app.peec.ai</a></div>
+      </div>
+      <div>
+        <div class="label">Next review</div>
+        <div class="value" id="c_next">…</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTENTS -->
+  <section class="page">
+    <div class="section-header"><div>
+      <div class="section-num">00 Navigation</div>
+      <h2 class="section-title">Contents</h2>
+    </div></div>
+
+    <ul class="toc">
+      <li><span class="n">01</span><span class="t">Executive summary</span><span class="tag">Insight</span><span class="pg">03</span></li>
+      <li><span class="n">02</span><span class="t">The Alternative Index</span><span class="tag">Metric</span><span class="pg">04</span></li>
+      <li><span class="n">03</span><span class="t">Evidence - the actual sentences</span><span class="tag">Peec chats</span><span class="pg">05</span></li>
+      <li><span class="n">04</span><span class="t">Per-AI positioning</span><span class="tag">Peec brand report</span><span class="pg">06</span></li>
+      <li><span class="n">05</span><span class="t">Category ownership map</span><span class="tag">AI × topic</span><span class="pg">07</span></li>
+      <li><span class="n">06</span><span class="t">Who's telling HP's story</span><span class="tag">Peec sources</span><span class="pg">08</span></li>
+      <li><span class="n">07</span><span class="t">The one move</span><span class="tag">Action</span><span class="pg">09</span></li>
+      <li><span class="n">08</span><span class="t">Methodology &amp; confidence</span><span class="tag">Notes</span><span class="pg">10</span></li>
+    </ul>
+
+    <div class="footer-line"><span>Narrator · Weekly Brand Narrative</span><span id="f_pg1">02</span></div>
+  </section>
+
+  <!-- 01 EXEC SUMMARY -->
+  <section class="page">
+    <div class="section-header"><div>
+      <div class="section-num">01 Insight</div>
+      <h2 class="section-title">Executive summary</h2>
+      <p class="section-subtitle">A single read of HP's AI search narrative this week. Sentiment and visibility look fine on Peec's Overview. The sentences tell a different story.</p>
+    </div></div>
+
+    <div class="content" id="c_exec"></div>
+    <div class="footer-line"><span>Narrator · Executive summary</span><span>03</span></div>
+  </section>
+
+  <!-- 02 ALT INDEX -->
+  <section class="page">
+    <div class="section-header"><div>
+      <div class="section-num">02 Metric</div>
+      <h2 class="section-title">The Alternative Index</h2>
+      <p class="section-subtitle">What percentage of AI responses frame the brand as the recommendation vs the alternative vs a peer in a list.</p>
+    </div></div>
+
+    <div class="stat-hero">
+      <div class="stat-hero-num"><span id="alt_num">…</span>%</div>
+      <div class="stat-hero-body">
+        <h3 id="alt_title">…</h3>
+        <p id="alt_note">…</p>
+      </div>
+    </div>
+
+    <table class="report-table">
+      <thead><tr><th>Classification</th><th>Rate</th><th>What it means</th></tr></thead>
+      <tbody id="alt_breakdown"></tbody>
+    </table>
+
+    <p class="section-subtitle" style="margin-top: 16px;" id="alt_expl"></p>
+
+    <div class="footer-line"><span>Narrator · Alternative Index</span><span>04</span></div>
+  </section>
+
+  <!-- 03 EVIDENCE -->
+  <section class="page">
+    <div class="section-header"><div>
+      <div class="section-num">03 Peec chats</div>
+      <h2 class="section-title">Evidence - the actual sentences</h2>
+      <p class="section-subtitle">Real responses this week, sampled across the active AI engines. Each quote is classified by reading the surrounding phrasing. Click to open the source chat in Peec.</p>
+    </div></div>
+
+    <div id="ev_list"></div>
+    <div class="footer-line"><span>Narrator · Evidence</span><span>05</span></div>
+  </section>
+
+  <!-- 04 PER-AI -->
+  <section class="page">
+    <div class="section-header"><div>
+      <div class="section-num">04 Peec brand report</div>
+      <h2 class="section-title">Per-AI positioning</h2>
+      <p class="section-subtitle">Each engine frames HP differently. Peec supplies the numbers; Narrator adds the single most actionable observation per engine.</p>
+    </div></div>
+
+    <table class="report-table">
+      <thead><tr><th>AI engine</th><th>Visibility</th><th>Sentiment</th><th>Position</th><th>Framing</th></tr></thead>
+      <tbody id="ai_table"></tbody>
+    </table>
+    <div id="ai_signals"></div>
+    <div class="footer-line"><span>Narrator · Per-AI positioning</span><span>06</span></div>
+  </section>
+
+  <!-- 05 CATEGORY MAP -->
+  <section class="page">
+    <div class="section-header"><div>
+      <div class="section-num">05 AI × topic</div>
+      <h2 class="section-title">Category ownership map</h2>
+      <p class="section-subtitle">HP vs Dell visibility per topic, plus the cross-tab of model × topic that Peec doesn't surface on Overview. The monitor gap becomes undeniable here.</p>
+    </div></div>
+
+    <table class="report-table">
+      <thead><tr><th>Topic</th><th>HP</th><th>Dell</th><th>Verdict</th></tr></thead>
+      <tbody id="cat_table"></tbody>
+    </table>
+
+    <div class="section-num" style="margin-top: 18px; margin-bottom: 10px;">HP visibility by AI × topic</div>
+    <table class="report-table mx">
+      <thead><tr><th>Topic</th><th>ChatGPT</th><th>Perplexity</th><th>AI Overview</th></tr></thead>
+      <tbody id="mx_table"></tbody>
+    </table>
+
+    <div class="footer-line"><span>Narrator · Category ownership</span><span>07</span></div>
+  </section>
+
+  <!-- 06 STORYTELLERS -->
+  <section class="page">
+    <div class="section-header"><div>
+      <div class="section-num">06 Peec sources</div>
+      <h2 class="section-title">Who's telling HP's story</h2>
+      <p class="section-subtitle">Articles driving HP's AI narrative this week. Each framing claim is tagged <strong>Verified</strong> (confirmed from chat text) or <strong>Inferred</strong> (deduced from citation pattern). All titles are live links.</p>
+    </div></div>
+
+    <div id="story_list"></div>
+    <div class="footer-line"><span>Narrator · Storytellers</span><span>08</span></div>
+  </section>
+
+  <!-- 07 THE ONE MOVE -->
+  <section class="page">
+    <div class="section-header"><div>
+      <div class="section-num">07 Action</div>
+      <h2 class="section-title">The one move this week</h2>
+      <p class="section-subtitle">Single highest-leverage action derived from the gaps above, with a copy-send pitch you can forward to the editor today.</p>
+    </div></div>
+
+    <div class="move-callout">
+      <h3 id="m_head">…</h3>
+      <p id="m_body"></p>
+      <div class="move-meta">
+        <div><span class="k">Owner</span><span id="m_owner"></span></div>
+        <div><span class="k">Timeline</span><span id="m_timeline"></span></div>
+        <div><span class="k">Expected impact</span><span id="m_impact"></span></div>
+      </div>
+    </div>
+
+    <div class="pitch-box">
+      <div class="pitch-head">
+        <span class="pitch-head-label">Copy-send pitch template</span>
+        <a class="pitch-mailto" id="m_mailto" href="#">Open in email ↗</a>
+      </div>
+      <div class="pitch-field"><span class="l">To</span><span id="m_to"></span></div>
+      <div class="pitch-field"><span class="l">Subject</span><span id="m_subject"></span></div>
+      <pre class="pitch-body-text" id="m_ptxt"></pre>
+      <div class="pitch-success"><span class="l" style="font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 600; margin-right: 6px;">Success metric</span><span id="m_success"></span></div>
+    </div>
+
+    <div class="footer-line"><span>Narrator · The one move</span><span>09</span></div>
+  </section>
+
+  <!-- 08 METHODOLOGY -->
+  <section class="page">
+    <div class="section-header"><div>
+      <div class="section-num">08 Notes</div>
+      <h2 class="section-title">Methodology &amp; confidence</h2>
+      <p class="section-subtitle">How Narrator classifies, where each data point comes from, and how to promote the Alternative Index from <em>directional</em> to <em>validated</em>.</p>
+    </div></div>
+
+    <div id="meth_list"></div>
+    <p class="section-subtitle" style="margin-top: 18px;" id="meth_process"></p>
+
+    <div class="footer-line"><span>Narrator · Methodology</span><span>10</span></div>
+  </section>
+
+  <script>
+    (async function () {
+      const data = await fetch("./data.json?v=" + Date.now(), { cache: "no-store" }).then((r) => r.json());
+      const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+      // Cover
+      const brand = data.meta.brand;
+      const windowLabel = data.meta.window_label;
+      const reportDate = new Date(data.meta.generated_at);
+      const reportId = `NAR-${brand.toUpperCase()}-${reportDate.toISOString().slice(0,10)}`;
+      const nextReview = new Date(reportDate.getTime() + 7 * 24 * 3600 * 1000);
+      const nextLabel = nextReview.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", year: "numeric" });
+
+      document.getElementById("c_brand").textContent = brand;
+      document.getElementById("c_for").textContent = brand;
+      document.getElementById("c_window").textContent = windowLabel;
+      document.getElementById("c_id").textContent = reportId;
+      document.getElementById("c_next").textContent = nextLabel;
+
+      const peecBase = data.meta.peec_app_base || "https://app.peec.ai";
+      const ownBrandId = data.meta.own_brand_id || "";
+      const chatLink = (id) => `${peecBase}/chats/${encodeURIComponent(id)}?brand=${encodeURIComponent(ownBrandId)}`;
+      const sourceLink = document.getElementById("c_source");
+      sourceLink.href = `${peecBase}/?brand=${encodeURIComponent(ownBrandId)}`;
+      sourceLink.textContent = "app.peec.ai";
+
+      // Exec summary
+      const topGap = [...data.category_ownership].sort((a, b) => (a.hp_visibility - b.hp_visibility))[0];
+      const topOwn = [...data.category_ownership].sort((a, b) => (b.hp_visibility - a.hp_visibility))[0];
+      const exec = document.getElementById("c_exec");
+      exec.innerHTML = `
+        <p class="lead">${brand} looks healthy in aggregate. Peec reports ${Math.round((data.meta.chats_mentioning_hp / data.meta.total_chats) * 100)}% visibility, sentiment ${data.alt_index.sentiment_for_reference}, and an average position of ${data.alt_index.position_for_reference}. But at the sentence level the picture splits.</p>
+        <p><strong>${brand} is framed as "the alternative" in ${data.alt_index.headline_pct}% of classified chats this week.</strong> Peec's numbers don't distinguish between being mentioned first with conviction and being mentioned second as "or similar." Narrator reads the phrasing and classifies it.</p>
+        <p>The strategic picture: ${brand} <strong>owns ${esc(topOwn.topic.toLowerCase())}</strong> (${Math.round(topOwn.hp_visibility * 100)}% visibility) and is <strong>effectively invisible on ${esc(topGap.topic.toLowerCase())}</strong> (${Math.round(topGap.hp_visibility * 100)}% vs ${data.meta.competitor_focus}'s ${Math.round(topGap.dell_visibility * 100)}%). A single article drives most of that gap, so a single well-scoped editorial action can close it.</p>
+        <p>This report ends with that action, a copy-send pitch to the editor who can fix it, and the success metric to watch in Peec over the next 14 days.</p>
+      `;
+
+      // Alt Index
+      document.getElementById("alt_num").textContent = data.alt_index.headline_pct;
+      document.getElementById("alt_title").textContent = data.alt_index.headline_label;
+      document.getElementById("alt_note").innerHTML = `<span class="tag-pill ${data.alt_index.confidence}">${data.alt_index.confidence}</span> · ${esc(data.alt_index.confidence_note)}`;
+      document.getElementById("alt_expl").textContent = data.alt_index.explainer;
+      const breakdown = [
+        ["Primary", data.alt_index.primary_rate, "The brand is the lead recommendation."],
+        ["Alternative", data.alt_index.alternative_rate, "The brand is mentioned after a competitor's lead (‘or similar from…')."],
+        ["Alongside", data.alt_index.alongside_rate, "The brand is listed in a peer group, no clear leader."],
+      ];
+      document.getElementById("alt_breakdown").innerHTML = breakdown.map(([k, v, d]) => `
+        <tr>
+          <td class="brand">${esc(k)}</td>
+          <td class="num">${Math.round(v * 100)}%</td>
+          <td>${esc(d)}</td>
+        </tr>`).join("");
+
+      // Evidence
+      const evEl = document.getElementById("ev_list");
+      evEl.innerHTML = data.evidence.map((e) => {
+        const quote = esc(e.quote);
+        const quoteHTML = e.hp_context ? quote.replace(esc(e.hp_context), `<span class="hp-hl">${esc(e.hp_context)}</span>`) : quote;
+        return `
+          <div style="padding: 14px 16px; border: 1px solid var(--line); border-radius: 8px; margin-bottom: 10px;">
+            <div style="display:flex; align-items:center; justify-content: space-between; gap:10px; margin-bottom:6px;">
+              <div style="font-weight:600; font-size:13.5px; color: var(--ink);">${esc(e.model)}</div>
+              <span class="framing framing-${e.classification}">${esc(e.classification)}</span>
+            </div>
+            <div style="font-size:12px; color: var(--muted); font-style: italic; margin-bottom: 6px;">Prompt: ${esc(e.prompt)}</div>
+            <blockquote class="quote ${e.classification}">${quoteHTML}</blockquote>
+            <a href="${esc(chatLink(e.chat_id))}" target="_blank" rel="noopener" style="font-size: 12px;">View chat in Peec ↗</a>
+          </div>`;
+      }).join("");
+
+      // Per-AI
+      const aiTable = document.getElementById("ai_table");
+      aiTable.innerHTML = data.per_ai.map((m) => `
+        <tr>
+          <td class="brand">${esc(m.model)}</td>
+          <td class="num">${Math.round(m.visibility * 100)}%</td>
+          <td class="num">${m.sentiment}</td>
+          <td class="num">${m.position}</td>
+          <td><span class="framing framing-${m.dominant_framing}">${esc(m.dominant_framing)}</span></td>
+        </tr>`).join("");
+      const aiSignals = document.getElementById("ai_signals");
+      aiSignals.innerHTML = `
+        <div class="section-num" style="margin-top: 20px; margin-bottom: 8px;">The Narrator signal per engine</div>
+        ${data.per_ai.map((m) => `
+          <div style="padding: 12px 14px; border-left: 3px solid var(--accent); background: var(--accent-soft); border-radius: 4px; margin-bottom: 8px;">
+            <div style="font-weight: 600; color: var(--accent-ink); font-size: 13px; margin-bottom: 4px;">${esc(m.model)}</div>
+            <div style="font-size: 12.5px; color: var(--accent-ink); line-height: 1.55;">${esc(m.unique_signal)}</div>
+          </div>`).join("")}
+      `;
+
+      // Category
+      const catTable = document.getElementById("cat_table");
+      catTable.innerHTML = data.category_ownership.map((c) => {
+        const v = c.verdict === "HP owns" ? "own" : (c.verdict === "Contested" ? "contested" : "invisible");
+        return `
+          <tr>
+            <td class="brand">${esc(c.topic)}</td>
+            <td class="num">${Math.round(c.hp_visibility * 100)}%</td>
+            <td class="num">${Math.round(c.dell_visibility * 100)}%</td>
+            <td><span class="verdict verdict-${v}">${esc(c.verdict)}</span></td>
+          </tr>`;
+      }).join("");
+
+      // Matrix
+      const mxCls = (v) => v >= 0.65 ? "cell-high" : v >= 0.4 ? "cell-mid" : v > 0 ? "cell-low" : "cell-zero";
+      document.getElementById("mx_table").innerHTML = data.ai_topic_matrix.rows.map((r) => `
+        <tr>
+          <td class="brand">${esc(r.topic)}</td>
+          <td class="cell ${mxCls(r.chatgpt)}">${Math.round(r.chatgpt * 100)}%</td>
+          <td class="cell ${mxCls(r.perplexity)}">${Math.round(r.perplexity * 100)}%</td>
+          <td class="cell ${mxCls(r.ai_overview)}">${Math.round(r.ai_overview * 100)}%</td>
+        </tr>`).join("");
+
+      // Storytellers
+      const storyEl = document.getElementById("story_list");
+      storyEl.innerHTML = data.storytellers.map((s) => `
+        <div class="source-block">
+          <div class="source-head">
+            <span class="source-pub">${esc(s.publication)}</span>
+            <span class="source-meta">${s.retrievals} retrievals · ${s.citations} citations</span>
+          </div>
+          <a class="source-article" href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.article)} ↗</a>
+          <div class="source-tags">
+            <span class="framing framing-${s.hp_framing}">${esc(s.hp_framing)}</span>
+            <span class="source-conf ${s.framing_source}">${s.framing_source === "verified" ? "Verified" : "Inferred"}</span>
+          </div>
+          <div class="source-row"><strong>Effect</strong>${esc(s.effect)}</div>
+          <div class="source-row"><strong>Move</strong>${esc(s.action)}</div>
+          <div class="source-row"><strong>Evidence</strong>${esc(s.framing_evidence)}</div>
+        </div>`).join("");
+
+      // Move
+      const m = data.move;
+      document.getElementById("m_head").textContent = m.headline;
+      document.getElementById("m_body").textContent = m.body;
+      document.getElementById("m_owner").textContent = m.owner;
+      document.getElementById("m_timeline").textContent = m.timeline;
+      document.getElementById("m_impact").textContent = m.expected_impact;
+      if (m.pitch_template) {
+        const p = m.pitch_template;
+        document.getElementById("m_to").textContent = p.to;
+        document.getElementById("m_subject").textContent = p.subject;
+        document.getElementById("m_ptxt").textContent = p.body;
+        document.getElementById("m_success").textContent = p.success_metric;
+        const mailto = `mailto:?subject=${encodeURIComponent(p.subject)}&body=${encodeURIComponent(p.body)}`;
+        document.getElementById("m_mailto").href = mailto;
+      }
+
+      // Methodology
+      const mth = data.methodology;
+      document.getElementById("meth_list").innerHTML = mth.items.map((it) => `
+        <div style="padding: 12px 14px; border: 1px solid var(--line); border-radius: 6px; margin-bottom: 8px;">
+          <span class="framing framing-${it.label.toLowerCase()}">${esc(it.label)}</span>
+          <div style="margin-top: 6px; font-size: 13px; color: var(--body); line-height: 1.55;">${esc(it.desc)}</div>
+        </div>`).join("");
+      document.getElementById("meth_process").textContent = mth.process;
+
+      // Toolbar actions
+      document.getElementById("printBtn").addEventListener("click", () => {
+        const title = document.title;
+        document.title = `${reportId} - Narrator`;
+        window.print();
+        setTimeout(() => (document.title = title), 500);
+      });
+      const emailBody = `Narrator weekly brand narrative report for ${brand}.%0D%0A%0D%0AReport: ${window.location.href}%0D%0A%0D%0AWindow: ${windowLabel}%0D%0A${data.alt_index.headline_label}%0D%0A${m.headline}.`;
+      document.getElementById("emailBtn").href = `mailto:?subject=${encodeURIComponent(`Narrator weekly report - ${brand} - ${windowLabel}`)}&body=${emailBody}`;
+    })();
+  </script>
+</body>
+</html>
