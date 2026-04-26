@@ -94,14 +94,4 @@ Hackathon/
 
 ---
 
-## What's next
-
-1. **Adjective ownership** - which descriptors (innovative, reliable, premium) each competitor owns, beyond raw sentiment.
-2. **Momentum detection** - once data spans multiple weeks, detect framing drift week-over-week and alert on source-caused shifts.
-3. **Citability prediction** - paste a draft URL, get a probability that AI search picks it up for a given prompt cluster.
-4. **Slack digest** - same content as the report, posted where marketers actually live.
-5. **Multi-brand rollup** - one dashboard view across all brands in a portfolio for agency and holding-company use.
-
----
-
 *Built with Peec AI MCP · #BuiltWithPeec*
